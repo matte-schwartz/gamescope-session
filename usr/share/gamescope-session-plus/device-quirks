@@ -177,10 +177,23 @@ if [[ ":Jupiter:" =~ ":$SYS_ID:"  ]]; then
       --fade-out-duration 200 "
   fi
    export STEAM_DISPLAY_REFRESH_LIMITS=40,60
+   export STEAM_ENABLE_DYNAMIC_BACKLIGHT=1
+   export STEAM_ENABLE_FAN_CONTROL=1
+   export WINE_CPU_TOPOLOGY=8:0,1,2,3,4,5,6,7
+   export STEAM_ENABLE_STATUS_LED_BRIGHTNESS=1
+  if [ -f "/usr/share/plymouth/themes/steamos/steamos-jupiter.png" ]; then
+    export STEAM_UPDATEUI_PNG_BACKGROUND=/usr/share/plymouth/themes/steamos/steamos-jupiter.png
+  fi
 fi
 
 # OLED Steam Deck
 if [[ ":Galileo:" =~ ":$SYS_ID:"  ]]; then
+  mura_args=()
+  mura_path=$(galileo-mura-setup)
+  if [ $? -eq 0 ]; then
+    mura_args=("--mura-map" "$mura_path")
+  fi
+
   # Dependent on a special --force-orientation option in gamescope
   if ( gamescope --help 2>&1 | grep -e "--force-orientation" > /dev/null ) ; then
     export GAMESCOPECMD="/usr/bin/gamescope \
@@ -193,6 +206,17 @@ if [[ ":Galileo:" =~ ":$SYS_ID:"  ]]; then
       --fade-out-duration 200 "
   fi
    export STEAM_DISPLAY_REFRESH_LIMITS=45,90
+   export STEAM_ENABLE_DYNAMIC_BACKLIGHT=1
+   export STEAM_ENABLE_FAN_CONTROL=1
+   export WINE_CPU_TOPOLOGY=8:0,1,2,3,4,5,6,7
+   export STEAM_ENABLE_STATUS_LED_BRIGHTNESS=1
+
+   export STEAM_GAMESCOPE_FORCE_HDR_DEFAULT=1
+   export STEAM_GAMESCOPE_FORCE_OUTPUT_TO_HDR10PQ_DEFAULT=1
+
+   if [ -f "/usr/share/plymouth/themes/steamos/steamos-galileo.png" ]; then
+     export STEAM_UPDATEUI_PNG_BACKGROUND=/usr/share/plymouth/themes/steamos/steamos-galileo.png
+   fi
 fi
 
 # ROG Ally
