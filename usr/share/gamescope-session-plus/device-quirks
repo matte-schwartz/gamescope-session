@@ -3,6 +3,13 @@
 
 SYS_ID="$(cat /sys/devices/virtual/dmi/id/product_name)"
 CPU_VENDOR="$(lscpu | grep "Vendor ID" | cut -d : -f 2 | xargs)"
+GPU_VENDOR="$(lspci | grep -i 'VGA' | head -n1 | cut -d ':' -f3 | xargs)"
+
+# NVIDIA GPUs
+if [[ "$GPU_VENDOR" == "NVIDIA Corporation" ]]; then
+  GAMESCOPE_ENABLE_HDR=1
+  export VKD3D_DISABLE_EXTENSIONS=VK_KHR_present_wait
+fi
 
 # OXP 60Hz Devices
 OXP_LIST="ONE XPLAYER:ONEXPLAYER 1 T08:ONEXPLAYER 1S A08:ONEXPLAYER 1S T08:ONEXPLAYER mini A07:ONEXPLAYER mini GA72:ONEXPLAYER mini GT72:ONEXPLAYER Mini Pro:ONEXPLAYER GUNDAM GA72:ONEXPLAYER 2 ARP23:ONEXPLAYER 2 PRO ARP23H:ONEXPLAYER 2 PRO ARP23P:ONEXPLAYER 2 PRO ARP23P EVA-01"
